@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prana Apps Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green-dark: #1a3a2a;
+    --green-mid: #2d6a4f;
+    --green-light: #52b788;
+    --green-pale: #d8f3dc;
+    --cream: #f8f5f0;
+    --text-dark: #1c2b22;
+    --text-muted: #6b8f71;
+    --card-bg: #ffffff;
+    --shadow: 0 2px 16px rgba(26,58,42,0.08);
+    --shadow-hover: 0 8px 32px rgba(26,58,42,0.16);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+  }
+
+  /* Header */
+  header {
+    background: var(--green-dark);
+    padding: 0 48px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-mark {
+    width: 34px;
+    height: 34px;
+    background: var(--green-light);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: white;
+    font-weight: 600;
+  }
+
+  .logo-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    letter-spacing: 0.02em;
+  }
+
+  .logo-text span {
+    color: var(--green-light);
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .user-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--green-mid);
+    border: 2px solid var(--green-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+  }
+
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 7px 14px;
+    color: rgba(255,255,255,0.6);
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s;
+    width: 220px;
+  }
+
+  .search-bar:hover { background: rgba(255,255,255,0.12); }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 100%);
+    padding: 48px 48px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    right: -60px;
+    top: -60px;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: rgba(82,183,136,0.12);
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: 80px;
+    bottom: -80px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(82,183,136,0.08);
+  }
+
+  .hero-content { position: relative; z-index: 1; }
+
+  .hero-greeting {
+    font-size: 13px;
+    color: var(--green-light);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    color: white;
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  .hero-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Quick stats */
+  .quick-stats {
+    display: flex;
+    gap: 24px;
+    margin-top: 28px;
+  }
+
+  .stat {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .stat-icon { font-size: 18px; }
+
+  .stat-info { line-height: 1.3; }
+
+  .stat-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Main content */
+  .main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 48px 60px;
+  }
+
+  /* Section */
+  .section { margin-bottom: 44px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+
+  .section-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-title::before {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 14px;
+    background: var(--green-light);
+    border-radius: 2px;
+  }
+
+  /* App grid */
+  .app-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 14px;
+  }
+
+  .app-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(26,58,42,0.07);
+    border-radius: 14px;
+    padding: 22px 16px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--text-dark);
+    transition: all 0.22s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .app-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--green-light);
+    transform: scaleX(0);
+    transition: transform 0.22s ease;
+    transform-origin: left;
+  }
+
+  .app-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(82,183,136,0.25);
+  }
+
+  .app-card:hover::after { transform: scaleX(1); }
+
+  .app-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    flex-shrink: 0;
+  }
+
+  .app-name {
+    font-size: 12.5px;
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.3;
+    color: var(--text-dark);
+  }
+
+  .app-tag {
+    font-size: 10px;
+    color: var(--text-muted);
+    background: var(--green-pale);
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-weight: 500;
+  }
+
+  .sso-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 0 2px rgba(74,222,128,0.25);
+  }
+
+  /* Drive section - wider cards */
+  .drive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .drive-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(26,58,42,0.07);
+    border-radius: 12px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--text-dark);
+    transition: all 0.2s ease;
+  }
+
+  .drive-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(82,183,136,0.2);
+  }
+
+  .drive-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .drive-info { flex: 1; min-width: 0; }
+
+  .drive-name {
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .drive-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, rgba(26,58,42,0.08), transparent);
+    margin-bottom: 40px;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: var(--text-muted);
+    border-top: 1px solid rgba(26,58,42,0.07);
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section { animation: fadeUp 0.4s ease both; }
+  .section:nth-child(1) { animation-delay: 0.05s; }
+  .section:nth-child(2) { animation-delay: 0.12s; }
+  .section:nth-child(3) { animation-delay: 0.18s; }
+  .section:nth-child(4) { animation-delay: 0.24s; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="logo">
+    <div class="logo-mark">P</div>
+    <div class="logo-text">Prana <span>Ventures</span></div>
+  </div>
+  <div class="header-right">
+    <div class="search-bar">🔍 &nbsp; Quick search apps...</div>
+    <div class="user-avatar">NL</div>
+  </div>
+</header>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-greeting">Good morning</div>
+    <div class="hero-title">Welcome back, Nil 👋</div>
+    <div class="hero-sub">All your tools, in one place.</div>
+    <div class="quick-stats">
+      <div class="stat">
+        <div class="stat-icon">🟢</div>
+        <div class="stat-info">
+          <div class="stat-value">8 Apps</div>
+          <div class="stat-label">SSO Active</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon">🔄</div>
+        <div class="stat-info">
+          <div class="stat-value">4 Apps</div>
+          <div class="stat-label">SSO Pending</div>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-icon">📁</div>
+        <div class="stat-info">
+          <div class="stat-value">6 Folders</div>
+          <div class="stat-label">Drive Shortcuts</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main -->
+<div class="main">
+
+  <!-- HR & People -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">HR & People</div>
+    </div>
+    <div class="app-grid">
+      <a href="#" class="app-card">
+        <div class="sso-badge"></div>
+        <div class="app-icon" style="background:#e8f5e9;">🌿</div>
+        <div class="app-name">Bamboo HR</div>
+        <div class="app-tag">SSO ✓</div>
+      </a>
+      <a href="#" class="app-card">
+        <div class="app-icon" style="background:#fff3e0;">💰</div>
+        <div class="app-name">Payroll</div>
+        <div class="app-tag">Login req.</div>
+      </a>
+      <a href="#" class="app-card">
+        <div class="sso-badge"></div>
+        <div class="app-icon" style="background:#fce4ec;">📊</div>
+        <div class="app-name">iLevel</div>
+        <div class="app-tag">SSO ✓</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Sales & CRM -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Sales & CRM</div>
+    </div>
+    <div class="app-grid">
+      <a href="#" class="app-card">
+        <div class="sso-badge"></div>
+        <div class="app-icon" style="background:#e3f2fd;">☁️</div>
+        <div class="app-name">Salesforce</div>
+        <div class="app-tag">SSO ✓</div>
+      </a>
+      <a href="#" class="app-card">
+        <div class="app-icon" style="background:#f3e5f5;">🏷️</div>
+        <div class="app-name">Taghash</div>
+        <div class="app-tag">Login req.</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Finance & Operations -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Finance & Operations</div>
+    </div>
+    <div class="app-grid">
+      <a href="#" class="app-card">
+        <div class="sso-badge"></div>
+        <div class="app-icon" style="background:#e8f5e9;">💸</div>
+        <div class="app-name">Zoho Expense</div>
+        <div class="app-tag">SSO ✓</div>
+      </a>
+      <a href="#" class="app-card">
+        <div class="app-icon" style="background:#fff8e1;">📋</div>
+        <div class="app-name">Egnyte</div>
+        <div class="app-tag">Login req.</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Communication -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Communication & Meetings</div>
+    </div>
+    <div class="app-grid">
+      <a href="#" class="app-card">
+        <div class="sso-badge"></div>
+        <div class="app-icon" style="background:#e3f2fd;">💬</div>
+        <div class="app-name">Zoom</div>
+        <div class="app-tag">SSO ✓</div>
+      </a>
+      <a href="#" class="app-card">
+        <div class="sso-badge"></div>
+        <div class="app-icon" style="background:#e8f5e9;">📧</div>
+        <div class="app-name">Gmail</div>
+        <div class="app-tag">SSO ✓</div>
+      </a>
+      <a href="#" class="app-card">
+        <div class="sso-badge"></div>
+        <div class="app-icon" style="background:#fff3e0;">📅</div>
+        <div class="app-name">Google Calendar</div>
+        <div class="app-tag">SSO ✓</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Google Drive -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Google Drive — Shared Folders</div>
+    </div>
+    <div class="drive-grid">
+      <a href="#" class="drive-card">
+        <div class="drive-icon" style="background:#e8f5e9;">📁</div>
+        <div class="drive-info">
+          <div class="drive-name">Company Policies</div>
+          <div class="drive-meta">Shared Drive · 24 files</div>
+        </div>
+      </a>
+      <a href="#" class="drive-card">
+        <div class="drive-icon" style="background:#e3f2fd;">📁</div>
+        <div class="drive-info">
+          <div class="drive-name">Finance & Invoices</div>
+          <div class="drive-meta">Shared Drive · 118 files</div>
+        </div>
+      </a>
+      <a href="#" class="drive-card">
+        <div class="drive-icon" style="background:#fff3e0;">📁</div>
+        <div class="drive-info">
+          <div class="drive-name">HR Documents</div>
+          <div class="drive-meta">Shared Drive · 56 files</div>
+        </div>
+      </a>
+      <a href="#" class="drive-card">
+        <div class="drive-icon" style="background:#fce4ec;">📁</div>
+        <div class="drive-info">
+          <div class="drive-name">Marketing Assets</div>
+          <div class="drive-meta">Shared Drive · 203 files</div>
+        </div>
+      </a>
+      <a href="#" class="drive-card">
+        <div class="drive-icon" style="background:#f3e5f5;">📁</div>
+        <div class="drive-info">
+          <div class="drive-name">IT & Infrastructure</div>
+          <div class="drive-meta">Shared Drive · 39 files</div>
+        </div>
+      </a>
+      <a href="#" class="drive-card">
+        <div class="drive-icon" style="background:#e8f5e9;">📁</div>
+        <div class="drive-info">
+          <div class="drive-name">Board & Leadership</div>
+          <div class="drive-meta">Restricted · 12 files</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Prana Ventures Internal Portal &nbsp;·&nbsp; Managed by IT via Hexnode &nbsp;·&nbsp; 🟢 = SSO Active &nbsp;·&nbsp; For support contact it@pranaventures.in
+</footer>
+
+</body>
+</html>

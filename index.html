@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prana Ventures — App Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #0d1f17;
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Animated background circles */
+  .bg-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.18;
+    animation: drift 12s ease-in-out infinite alternate;
+  }
+
+  .bg-orb-1 {
+    width: 500px; height: 500px;
+    background: #52b788;
+    top: -100px; left: -100px;
+    animation-delay: 0s;
+  }
+
+  .bg-orb-2 {
+    width: 400px; height: 400px;
+    background: #2d6a4f;
+    bottom: -80px; right: -80px;
+    animation-delay: -4s;
+  }
+
+  .bg-orb-3 {
+    width: 300px; height: 300px;
+    background: #74c69d;
+    top: 50%; right: 20%;
+    animation-delay: -8s;
+  }
+
+  @keyframes drift {
+    from { transform: translate(0, 0) scale(1); }
+    to { transform: translate(30px, 20px) scale(1.08); }
+  }
+
+  /* Grid texture overlay */
+  .grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(82,183,136,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(82,183,136,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* Main content */
+  .container {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 40px;
+    max-width: 760px;
+  }
+
+  /* Logo mark */
+  .logo-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #52b788, #2d6a4f);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 28px;
+    box-shadow: 0 0 40px rgba(82,183,136,0.4);
+    animation: floatLogo 4s ease-in-out infinite;
+  }
+
+  @keyframes floatLogo {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  /* Eyebrow */
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #52b788;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+
+  /* Headline */
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(48px, 7vw, 80px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: white;
+    margin-bottom: 6px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: #74c69d;
+  }
+
+  .headline-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 300;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: -0.01em;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.55s forwards;
+  }
+
+  /* Divider line */
+  .divider {
+    width: 48px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #52b788, transparent);
+    margin: 0 auto 28px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.7s forwards;
+  }
+
+  /* Description */
+  .description {
+    font-size: 15px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.75;
+    max-width: 480px;
+    margin: 0 auto 44px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.8s forwards;
+  }
+
+  /* CTA Button */
+  .cta-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1s forwards;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #52b788, #2d6a4f);
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 14px 32px;
+    border-radius: 100px;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 24px rgba(82,183,136,0.3);
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(82,183,136,0.45);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    font-weight: 400;
+    text-decoration: none;
+    transition: color 0.2s;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .btn-secondary:hover { color: rgba(255,255,255,0.85); }
+
+  /* App pill strip */
+  .app-strip {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.3s forwards;
+    white-space: nowrap;
+  }
+
+  .strip-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+
+  .app-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 100px;
+    padding: 5px 12px 5px 6px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    backdrop-filter: blur(10px);
+  }
+
+  .pill-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+  }
+
+  /* Corner decorations */
+  .corner {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    opacity: 0.12;
+  }
+
+  .corner-tl {
+    top: 24px; left: 24px;
+    border-top: 1px solid #52b788;
+    border-left: 1px solid #52b788;
+  }
+
+  .corner-br {
+    bottom: 24px; right: 24px;
+    border-bottom: 1px solid #52b788;
+    border-right: 1px solid #52b788;
+  }
+
+  /* Status dot */
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.3s forwards;
+  }
+
+  .status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 8px rgba(74,222,128,0.6);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.85); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Background -->
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
+<div class="grid-overlay"></div>
+
+<!-- Corner accents -->
+<div class="corner corner-tl"></div>
+<div class="corner corner-br"></div>
+
+<!-- Main Content -->
+<div class="container">
+  <div class="logo-mark">P</div>
+
+  <div class="status">
+    <div class="status-dot"></div>
+    All systems operational
+  </div>
+
+  <div class="eyebrow">Prana Ventures · Internal Portal</div>
+
+  <h1>Your <em>workspace,</em></h1>
+  <div class="headline-sub">unified.</div>
+
+  <div class="divider"></div>
+
+  <p class="description">
+    Every tool your team needs — HR, finance, communication, and storage — in one place. Secure, centralized, and one click away.
+  </p>
+
+  <div class="cta-group">
+    <a href="prana-apps-portal.html" class="btn-primary">
+      ✦ &nbsp; Open App Portal
+    </a>
+    <a href="#" class="btn-secondary">
+      Need help? &nbsp; →
+    </a>
+  </div>
+</div>
+
+<!-- App strip at bottom -->
+<div class="app-strip">
+  <span class="strip-label">Includes</span>
+  <div class="app-pill"><div class="pill-dot" style="background:#e8f5e9;">🌿</div> Bamboo HR</div>
+  <div class="app-pill"><div class="pill-dot" style="background:#e3f2fd;">☁️</div> Salesforce</div>
+  <div class="app-pill"><div class="pill-dot" style="background:#fff3e0;">💰</div> Payroll</div>
+  <div class="app-pill"><div class="pill-dot" style="background:#e8f5e9;">💸</div> Zoho Expense</div>
+  <div class="app-pill"><div class="pill-dot" style="background:#e3f2fd;">💬</div> Zoom</div>
+  <div class="app-pill" style="color:rgba(255,255,255,0.25); border-style:dashed;">+ 8 more</div>
+</div>
+
+</body>
+</html>
